@@ -1,5 +1,5 @@
 
-package jdbcgui;
+package trainmanagementgui;
 
 public class LoginUser {
 

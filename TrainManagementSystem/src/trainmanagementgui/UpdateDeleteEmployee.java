@@ -1,15 +1,14 @@
-package jdbcgui;
+package trainmanagementgui;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,50 +19,57 @@ import javax.swing.JOptionPane;
  *
  * @author wissam
  */
-public class AddEmployee extends javax.swing.JFrame {
+public class UpdateDeleteEmployee extends javax.swing.JFrame {
+    
+    myDBCon dbCon;
+    ResultSet rs, rsdeptno;
 
     /**
      * Creates new form AddEmployee
      */
-    myDBCon dbCon;
-    ResultSet rs;
-
-   
-    public AddEmployee() {
+    public UpdateDeleteEmployee() {
         initComponents();
-        // center form in screen 
         this.setLocationRelativeTo(null);
-        // set all error labels to invisible
+
         lblEmpnoError.setVisible(false);
         lblEnameError.setVisible(false);
         lblJobError.setVisible(false);
         lblHiredateError.setVisible(false);
         lblSalaryError.setVisible(false);
         lblCommError.setVisible(false);
-        
         dbCon = new myDBCon();
-        //populate mgr and deptno combo boxes 
-        try {
-            
-            rs = dbCon.executeStatementQuery("SELECT empno FROM emp ORDER BY empno ASC");
+        getNewData();
 
-            // populate mgr combo box
+
+    }
+
+    private void getNewData() {
+
+        try {
+            String str;
+            // populate deptno field
+            rsdeptno = dbCon.executeStatementQuery("SELECT deptno, dname FROM dept ORDER BY deptno ASC ");
+            cmbDeptno.removeAllItems();
+            while (rsdeptno.next()) {
+                cmbDeptno.addItem(rsdeptno.getString("deptno"));
+            }
+
+            // populate mgr field
+            rs = dbCon.executeStatementQuery("SELECT empno, ename, job, mgr, hiredate, sal, comm, deptno FROM emp ORDER BY empno ASC ");
+            cmbMgr.removeAllItems();
             while (rs.next()) {
                 cmbMgr.addItem(rs.getString("empno"));
             }
 
-            // get and populate valid department numbers 
-            rs = dbCon.executeStatementQuery("SELECT DISTINCT deptno, dname FROM dept ORDER BY deptno ASC");
-            while (rs.next()) {
-                cmbDeptno.addItem(rs.getString("deptno"));
-            }
-
-            rs.close();
-           
+            // populate rest of fields
+            rs.beforeFirst();
+            rs.first();
+            populateFields();
         } catch (SQLException e) {
-            System.out.println(e);
+            javax.swing.JLabel label = new javax.swing.JLabel("SQL Error - Display selected empno.");
+            label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
+            JOptionPane.showMessageDialog(null, label, "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     /**
@@ -84,27 +90,30 @@ public class AddEmployee extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        txtEmpno = new javax.swing.JTextField();
         txtEname = new javax.swing.JTextField();
         txtJob = new javax.swing.JTextField();
         txtSalary = new javax.swing.JTextField();
         txtComm = new javax.swing.JTextField();
         cmbMgr = new javax.swing.JComboBox<>();
         cmbDeptno = new javax.swing.JComboBox<>();
-        btnAddNewEmp = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         ftxtHiredate = new javax.swing.JFormattedTextField();
+        txtEmpno = new javax.swing.JTextField();
+        btnNext = new javax.swing.JButton();
+        btnPrevious = new javax.swing.JButton();
         lblEmpnoError = new javax.swing.JLabel();
-        lblJobError = new javax.swing.JLabel();
         lblEnameError = new javax.swing.JLabel();
+        lblJobError = new javax.swing.JLabel();
         lblHiredateError = new javax.swing.JLabel();
         lblSalaryError = new javax.swing.JLabel();
         lblCommError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Add New Employee");
+        setTitle("Update/Delete Employee");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Add New Employee");
+        jLabel1.setText("Update/Delete Employee");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("EMPNO:");
@@ -130,8 +139,6 @@ public class AddEmployee extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel9.setText("DEPTNO:");
 
-        txtEmpno.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
         txtEname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         txtJob.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -149,28 +156,55 @@ public class AddEmployee extends javax.swing.JFrame {
 
         cmbDeptno.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        btnAddNewEmp.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        btnAddNewEmp.setText("Add New");
-        btnAddNewEmp.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddNewEmpActionPerformed(evt);
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
             }
         });
 
         ftxtHiredate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd-MMM-yyyy"))));
         ftxtHiredate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        txtEmpno.setEditable(false);
+        txtEmpno.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btnNext.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        btnNext.setText("Next >>");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
+
+        btnPrevious.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        btnPrevious.setText("<< Previous");
+        btnPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreviousActionPerformed(evt);
+            }
+        });
+
         lblEmpnoError.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         lblEmpnoError.setForeground(new java.awt.Color(255, 0, 0));
         lblEmpnoError.setText("error label");
 
-        lblJobError.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
-        lblJobError.setForeground(new java.awt.Color(255, 0, 0));
-        lblJobError.setText("error label");
-
         lblEnameError.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         lblEnameError.setForeground(new java.awt.Color(255, 0, 0));
         lblEnameError.setText("error label");
+
+        lblJobError.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
+        lblJobError.setForeground(new java.awt.Color(255, 0, 0));
+        lblJobError.setText("error label");
 
         lblHiredateError.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         lblHiredateError.setForeground(new java.awt.Color(255, 0, 0));
@@ -194,46 +228,54 @@ public class AddEmployee extends javax.swing.JFrame {
                         .addGap(149, 149, 149)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnAddNewEmp)
-                                    .addComponent(txtEname, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                    .addComponent(txtJob)
-                                    .addComponent(txtComm, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                    .addComponent(txtSalary)
-                                    .addComponent(cmbMgr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbDeptno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ftxtHiredate))
+                                .addGap(76, 76, 76)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel9)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnPrevious)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnUpdate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnNext))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtEmpno, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ftxtHiredate, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEname, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(txtJob, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtComm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(txtSalary, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbMgr, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbDeptno, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblEnameError, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(lblEmpnoError, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(lblEnameError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(lblJobError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(lblHiredateError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(lblSalaryError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblCommError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtEmpno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblEmpnoError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap(104, Short.MAX_VALUE))
+                                    .addComponent(lblCommError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(38, 38, 38)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtEmpno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -253,11 +295,10 @@ public class AddEmployee extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(cmbMgr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblHiredateError, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(ftxtHiredate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(ftxtHiredate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblHiredateError))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -273,8 +314,12 @@ public class AddEmployee extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(cmbDeptno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnAddNewEmp)
-                .addGap(0, 39, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnDelete)
+                    .addComponent(btnNext)
+                    .addComponent(btnPrevious))
+                .addGap(0, 51, Short.MAX_VALUE))
         );
 
         pack();
@@ -283,6 +328,120 @@ public class AddEmployee extends javax.swing.JFrame {
     private void txtJobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtJobActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtJobActionPerformed
+
+    private void populateFields() {
+        try {
+            txtEmpno.setText(rs.getString("empno"));
+            txtEname.setText(rs.getString("ename"));
+            txtJob.setText(rs.getString("job"));
+            cmbMgr.setSelectedItem(rs.getString("mgr"));
+            ftxtHiredate.setText(rs.getString("hiredate"));
+            txtSalary.setText(rs.getString("sal"));
+            txtComm.setText(rs.getString("comm"));
+            cmbDeptno.setSelectedItem(rs.getString("deptno"));
+
+            EnableDisableButtons();
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void MoveNext() {
+        try {
+            // TODO add your handling code here:
+
+            if (!rs.isLast()) {
+
+                rs.next();
+                populateFields();
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        MoveNext();
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void MovePrevious() {
+        try {
+            // TODO add your handling code here:
+
+            if (!rs.isFirst()) {
+                rs.previous();
+                populateFields();
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void EnableDisableButtons() {
+        try {
+            if (rs.isFirst()) {
+                btnPrevious.setEnabled(false);
+            } else {
+                btnPrevious.setEnabled(true);
+            }
+            if (rs.isLast()) {
+                btnNext.setEnabled(false);
+            } else {
+                btnNext.setEnabled(true);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    private void btnPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousActionPerformed
+        // TODO add your handling code here:
+        MovePrevious();
+    }//GEN-LAST:event_btnPreviousActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            //Promts the user to confirm choice
+            int confirm_delete = JOptionPane.showConfirmDialog(this, "Confirm to Delete Employee?");
+            if (confirm_delete == 0) {
+            // make the result set scrolable forward/backward updatable
+            
+             String prepSQL = "DELETE emp WHERE empno = " + txtEmpno.getText().trim();
+            int result = dbCon.executePreparedStmnt(prepSQL);
+
+            if (result > 0) {
+                javax.swing.JLabel label = new javax.swing.JLabel("Employee No " + txtEmpno.getText().trim() + " deleted successfully.");
+                label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
+                JOptionPane.showMessageDialog(null, label, "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+                getNewData();
+            }
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error adding new employee.");
+
+        }
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    void clearErrorLabels() {
+        lblEmpnoError.setText("");
+        lblEmpnoError.setVisible(false);
+        lblEnameError.setText("");
+        lblEnameError.setVisible(false);
+        lblJobError.setText("");
+        lblJobError.setVisible(false);
+        lblHiredateError.setText("");
+        lblHiredateError.setVisible(false);
+        lblSalaryError.setText("");
+        lblSalaryError.setVisible(false);
+        lblCommError.setText("");
+        lblCommError.setVisible(false);
+
+    }
 
     public boolean isInteger(String s) {
         try {
@@ -301,27 +460,10 @@ public class AddEmployee extends javax.swing.JFrame {
             return false;
         }
     }
-    
-    //clears alll the error labels
-    void clearErrorLabels() {
-        lblEmpnoError.setText("");
-        lblEmpnoError.setVisible(false);
-        lblEnameError.setText("");
-        lblEnameError.setVisible(false);
-        lblJobError.setText("");
-        lblJobError.setVisible(false);
-        lblHiredateError.setText("");
-        lblHiredateError.setVisible(false);
-        lblSalaryError.setText("");
-        lblSalaryError.setVisible(false);
-        lblCommError.setText("");
-        lblCommError.setVisible(false);
-
-    }
 
     boolean isValidData() {
 
-        clearErrorLabels(); //clears all error labels
+        clearErrorLabels();
         boolean result = true;
         if (txtEmpno.getText().trim().isEmpty() || !isInteger(txtEmpno.getText().trim())) {
             if (txtEmpno.getText().trim().isEmpty()) {
@@ -386,50 +528,45 @@ public class AddEmployee extends javax.swing.JFrame {
         return result;
     }
 
-    void clearInputBoxes() {
-        txtEmpno.setText("");
-        txtEname.setText("");
-        txtJob.setText("");
-        ftxtHiredate.setText("");
-        txtSalary.setText("");
-        txtComm.setText("");
-        cmbDeptno.setSelectedIndex(0);
-        cmbMgr.setSelectedIndex(0);
-    }
-
-    private void btnAddNewEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewEmpActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
 
         try {
+            // make the result set scrolable forward/backward updatable
+//            statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
-                
             if (isValidData()) {
+              //Promts the user to confirm choice              
+            int confirm_update = JOptionPane.showConfirmDialog(this, "Confirm To Update Employee?");
+            if (confirm_update == 0) {
                 
-                //Inserts new employee data into the emp table after validation
-                String prepareSQL = "INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno) VALUES ("
-                        + Integer.parseInt(txtEmpno.getText())
-                        + ",'" + txtEname.getText().toUpperCase() + "'"
-                        + ", '" + txtJob.getText().toUpperCase() + "'"
-                        + ", " + Integer.parseInt(cmbMgr.getSelectedItem().toString())
-                        + ", '" + ftxtHiredate.getText() + "'"
-                        + ", " + Integer.parseInt(txtSalary.getText())
-                        + ", " + Integer.parseInt(txtComm.getText())
-                        + ", " + Integer.parseInt(cmbDeptno.getSelectedItem().toString()) + ")";
+                //Updates the employee fields after validation
+                String prepSQL = "UPDATE emp SET ename = "
+                            + "'" + txtEname.getText().toUpperCase() + "'"
+                            + " ,job = '" + txtJob.getText().toUpperCase() + "'"
+                            + " , mgr = " + Integer.parseInt(cmbMgr.getSelectedItem().toString())
+                            + " , hiredate = '" + ftxtHiredate.getText() + "'"
+                            + " , sal = " + Integer.parseInt(txtSalary.getText())
+                            + " , comm = " + Integer.parseInt(txtComm.getText())
+                            + " , deptno = " + Integer.parseInt(cmbDeptno.getSelectedItem().toString())
+                            + " WHERE empno = " + Integer.parseInt(txtEmpno.getText().trim());
 
-                int result = dbCon.executePreparedStmnt(prepareSQL);
+                int result = dbCon.executePreparedStmnt(prepSQL);
 
+                    
                 if (result > 0) {
 
-                    javax.swing.JLabel label = new javax.swing.JLabel("New employee added successfully.");
+                    javax.swing.JLabel label = new javax.swing.JLabel("Employee No " + txtEmpno.getText() + " updated successfully.");
                     label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
                     JOptionPane.showMessageDialog(null, label, "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 
-                    clearInputBoxes();
+                    getNewData();
+
                 } else {
                     // check validation errors 
                 }
-
-
+            }  
+            
             } else {
 
                 javax.swing.JLabel label = new javax.swing.JLabel("Please fix validation errors...");
@@ -439,13 +576,18 @@ public class AddEmployee extends javax.swing.JFrame {
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error adding new employee.");
+
+            JOptionPane.showMessageDialog(null, "Error updating employee." + e.getMessage());
+
         }
-    }//GEN-LAST:event_btnAddNewEmpActionPerformed
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddNewEmp;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnNext;
+    private javax.swing.JButton btnPrevious;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cmbDeptno;
     private javax.swing.JComboBox<String> cmbMgr;
     private javax.swing.JFormattedTextField ftxtHiredate;
