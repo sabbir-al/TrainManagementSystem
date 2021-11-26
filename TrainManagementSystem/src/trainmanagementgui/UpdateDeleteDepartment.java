@@ -1,4 +1,4 @@
-package jdbcgui;
+package trainmanagementgui;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
