@@ -22,9 +22,10 @@ public class myDBCon {
     String DBUSER = "b00079438";
     String DBPASS = "b00079438";
 
+    
     Connection con;
     Statement statement;
-    
+  
     Statement statement2;
     PreparedStatement prepStatement;
     ResultSet rs;
