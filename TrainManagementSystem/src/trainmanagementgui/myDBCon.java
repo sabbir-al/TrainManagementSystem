@@ -24,6 +24,7 @@ public class myDBCon {
 
     Connection con;
     Statement statement;
+    
     Statement statement2;
     PreparedStatement prepStatement;
     ResultSet rs;

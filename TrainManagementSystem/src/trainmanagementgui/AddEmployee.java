@@ -31,6 +31,7 @@ public class AddEmployee extends javax.swing.JFrame {
    
     public AddEmployee() {
         initComponents();
+        
         // center form in screen 
         this.setLocationRelativeTo(null);
         // set all error labels to invisible
