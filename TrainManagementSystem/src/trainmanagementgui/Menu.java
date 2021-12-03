@@ -104,12 +104,12 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenuUser.setText("User");
+        jMenuUser.setText("Admins");
         jMenuUser.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jMenuItem7.setText("Add New User");
+        jMenuItem7.setText("Add New Admin");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem7ActionPerformed(evt);
@@ -119,7 +119,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jMenuItem8.setText("Update/Delete User");
+        jMenuItem8.setText("Update/Delete Admin");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem8ActionPerformed(evt);
