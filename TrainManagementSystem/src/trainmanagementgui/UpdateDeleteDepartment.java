@@ -275,31 +275,31 @@ public class UpdateDeleteDepartment extends javax.swing.JFrame {
             int confirm_delete = JOptionPane.showConfirmDialog(this, "Confirm to Delete Department?");
             if (confirm_delete == 0) {
             
-             //Checks if employee exists for the department that the user wants to delete
-            rs2 = dbCon.executeStatementQuery("SELECT * FROM emp where deptno =" + txtDno.getText().trim());
+                //Checks if employee exists for the department that the user wants to delete
+               rs2 = dbCon.executeStatementQuery("SELECT * FROM emp where deptno =" + txtDno.getText().trim());
 
-            //Deletes the department if no employee is assigned to it
-            if(!rs2.next()){
-                String prepSQL = "DELETE dept WHERE deptno = " + txtDno.getText().trim();
-                int result = dbCon.executePreparedStmnt(prepSQL);
+               //Deletes the department if no employee is assigned to it
+               if(!rs2.next()){
+                   String prepSQL = "DELETE dept WHERE deptno = " + txtDno.getText().trim();
+                   int result = dbCon.executePreparedStmnt(prepSQL);
 
-                
-                if (result > 0) {
-                javax.swing.JLabel label = new javax.swing.JLabel("Department No " + txtDno.getText().trim() + " deleted successfully.");
-                label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
-                JOptionPane.showMessageDialog(null, label, "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-                getNewData();
-              }
-                else {
-                    javax.swing.JLabel label = new javax.swing.JLabel("Department Delete Failed.");
-                    label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
-                    JOptionPane.showMessageDialog(null, label, "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-           
-            else{
-                 JOptionPane.showMessageDialog(this, "Cannot Delete Department. Employees are still assigned to it!!");
-            }
+
+                   if (result > 0) {
+                   javax.swing.JLabel label = new javax.swing.JLabel("Department No " + txtDno.getText().trim() + " deleted successfully.");
+                   label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
+                   JOptionPane.showMessageDialog(null, label, "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+                   getNewData();
+                 }
+                   else {
+                       javax.swing.JLabel label = new javax.swing.JLabel("Department Delete Failed.");
+                       label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
+                       JOptionPane.showMessageDialog(null, label, "ERROR", JOptionPane.ERROR_MESSAGE);
+                   }
+               }
+
+               else{
+                    JOptionPane.showMessageDialog(this, "Cannot Delete Department. Employees are still assigned to it!!");
+               }
 
             }
 
