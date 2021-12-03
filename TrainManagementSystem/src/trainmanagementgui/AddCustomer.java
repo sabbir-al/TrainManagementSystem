@@ -147,6 +147,11 @@ public class AddCustomer extends javax.swing.JFrame {
         });
 
         txtFname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtFname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFnameActionPerformed(evt);
+            }
+        });
 
         txtLName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txtLName.addActionListener(new java.awt.event.ActionListener() {
@@ -514,6 +519,10 @@ public class AddCustomer extends javax.swing.JFrame {
     private void CloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseActionPerformed
         this.dispose();
     }//GEN-LAST:event_CloseActionPerformed
+
+    private void txtFnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFnameActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -354,10 +354,11 @@ public class UpdateDeleteLoginAdmins extends javax.swing.JFrame {
                 int confirm_update = JOptionPane.showConfirmDialog(this, "Confirm to Update User Info?");
                 if (confirm_update == 0) {
                     
-                    //Checking that the changed username does not exist in the database
+                    String oldusername = rs.getString("username");
+                     
                     if (!username.getText().trim().equals(rs.getString("username"))) {
-                        
-                        rs = dbCon.executeStatementQuery("SELECT * FROM loginusers WHERE LOWER(username) = LOWER('" + username.getText().trim() + "')");
+                        rs = dbCon.executeStatementQuery("SELECT * FROM loginusers WHERE username = LOWER('" + username.getText().trim() + "')");
+                    //Checking that the changed username does not exist in the database
                         if (rs.next()) {
                             javax.swing.JLabel label = new javax.swing.JLabel("An account with the same Username Already Exists!");
                             label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
@@ -368,7 +369,7 @@ public class UpdateDeleteLoginAdmins extends javax.swing.JFrame {
                         }
 
                     }
-                    
+
                     MessageDigest md = MessageDigest.getInstance("MD5");
                     byte[] sign = md.digest(password.getText().trim().getBytes());
                     String hashPwd = String.format("%032X", new BigInteger(1, sign));
@@ -378,7 +379,7 @@ public class UpdateDeleteLoginAdmins extends javax.swing.JFrame {
                      String prepSQL = "UPDATE loginusers set username = '" + username.getText().trim() + "'"
                             + " , password ='" + hashPwd + "'"
                             + " , name = '" + name.getText().trim() + "'"
-                            + " WHERE username = '" + rs.getString("username") + "'";;
+                            + " WHERE username = '" + oldusername + "'";;
 
                     int result = dbCon.executePreparedStmnt(prepSQL);
                     
@@ -407,7 +408,7 @@ public class UpdateDeleteLoginAdmins extends javax.swing.JFrame {
 
         } catch (SQLException e) {
 
-            JOptionPane.showMessageDialog(null, "Error updating employee." + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error updating admin." + e.getMessage());
 
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UpdateDeleteLoginAdmins.class.getName()).log(Level.SEVERE, null, ex);
