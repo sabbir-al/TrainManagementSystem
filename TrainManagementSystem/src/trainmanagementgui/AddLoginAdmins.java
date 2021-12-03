@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class AddLoginUser extends javax.swing.JFrame {
+public class AddLoginAdmins extends javax.swing.JFrame {
 
     myDBCon dbCon;
     ResultSet rs;
@@ -27,7 +27,7 @@ public class AddLoginUser extends javax.swing.JFrame {
     /**
      * Creates new form AddLoginUser
      */
-    public AddLoginUser() {
+    public AddLoginAdmins() {
         initComponents();
         this.setLocationRelativeTo(null);
         dbCon = new myDBCon();
@@ -351,7 +351,7 @@ public class AddLoginUser extends javax.swing.JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error adding new employee." + e.getMessage());
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AddLoginUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddLoginAdmins.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAddNewUserActionPerformed
 
@@ -386,28 +386,30 @@ public class AddLoginUser extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddLoginUser.class
+            java.util.logging.Logger.getLogger(AddLoginAdmins.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddLoginUser.class
+            java.util.logging.Logger.getLogger(AddLoginAdmins.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddLoginUser.class
+            java.util.logging.Logger.getLogger(AddLoginAdmins.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddLoginUser.class
+            java.util.logging.Logger.getLogger(AddLoginAdmins.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddLoginUser().setVisible(true);
+                new AddLoginAdmins().setVisible(true);
             }
         });
     }

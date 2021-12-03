@@ -175,7 +175,7 @@ public class Menu extends javax.swing.JFrame {
     //Update Delete Employee Menu
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
-        (new UpdateDeleteEmployee()).setVisible(true);
+        (new UpdateDeleteCustomers()).setVisible(true);
 
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
@@ -195,12 +195,12 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
     //Add Login User Menu
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-         (new AddLoginUser()).setVisible(true);
+         (new AddLoginAdmins()).setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
         //Update Delete Login User Menu
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        (new UpdateDeleteLoginUser()).setVisible(true);
+        (new UpdateDeleteLoginAdmins()).setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
 

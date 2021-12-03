@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  *
  * @author Tasli
  */
-public class UpdateDeleteLoginUser extends javax.swing.JFrame {
+public class UpdateDeleteLoginAdmins extends javax.swing.JFrame {
 
     myDBCon dbCon;
     ResultSet rs;
@@ -30,7 +30,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
     /**
      * Creates new form UpdateDeleteLoginUser
      */
-    public UpdateDeleteLoginUser() {
+    public UpdateDeleteLoginAdmins() {
         initComponents();
         this.setLocationRelativeTo(null);
         clearErrorLabels();
@@ -267,7 +267,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
             name.setText(rs.getString("name"));
             EnableDisableButtons();
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -410,7 +410,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error updating employee." + e.getMessage());
 
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(UpdateDeleteLoginUser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteLoginAdmins.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -457,7 +457,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -471,7 +471,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -488,7 +488,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
                 btnNext.setEnabled(true);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -532,21 +532,23 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UpdateDeleteLoginUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateDeleteLoginAdmins.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UpdateDeleteLoginUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateDeleteLoginAdmins.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UpdateDeleteLoginUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateDeleteLoginAdmins.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UpdateDeleteLoginUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateDeleteLoginAdmins.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UpdateDeleteLoginUser().setVisible(true);
+                new UpdateDeleteLoginAdmins().setVisible(true);
             }
         });
     }

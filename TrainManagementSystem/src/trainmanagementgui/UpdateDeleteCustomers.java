@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * @author wissam
  */
-public class UpdateDeleteEmployee extends javax.swing.JFrame {
+public class UpdateDeleteCustomers extends javax.swing.JFrame {
     
     myDBCon dbCon;
     ResultSet rs, rsdeptno;
@@ -27,7 +27,7 @@ public class UpdateDeleteEmployee extends javax.swing.JFrame {
     /**
      * Creates new form AddEmployee
      */
-    public UpdateDeleteEmployee() {
+    public UpdateDeleteCustomers() {
         initComponents();
         this.setLocationRelativeTo(null);
 
@@ -342,7 +342,7 @@ public class UpdateDeleteEmployee extends javax.swing.JFrame {
 
             EnableDisableButtons();
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -357,7 +357,7 @@ public class UpdateDeleteEmployee extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
@@ -374,7 +374,7 @@ public class UpdateDeleteEmployee extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -391,7 +391,7 @@ public class UpdateDeleteEmployee extends javax.swing.JFrame {
                 btnNext.setEnabled(true);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateDeleteCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
