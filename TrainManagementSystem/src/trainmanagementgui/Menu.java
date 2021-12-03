@@ -17,7 +17,7 @@ public class Menu extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         //Disables User Menu if the login user is not admin.
-         if (userInfo.type == 1) { 
+         if (userInfo.id != 0) { 
             jMenuUser.setVisible(false);
         }
     }

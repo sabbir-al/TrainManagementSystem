@@ -34,9 +34,6 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         clearErrorLabels();
-        usertype.removeAllItems();
-        usertype.addItem("0");
-        usertype.addItem("1");
         dbCon = new myDBCon();
         getNewData();  
 
@@ -58,13 +55,10 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         btnPrevious = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
-        usertype = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
         lblNameError = new javax.swing.JLabel();
         lblPwdError = new javax.swing.JLabel();
         lblUsernameError = new javax.swing.JLabel();
@@ -78,7 +72,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Update/Delete Login User");
+        jLabel1.setText("Update/Delete Admin Profiles");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("USERNAME:");
@@ -88,9 +82,6 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Name:");
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setText("Type:");
 
         btnPrevious.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         btnPrevious.setText("<< Previous");
@@ -123,15 +114,6 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
                 btnNextActionPerformed(evt);
             }
         });
-
-        usertype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        usertype.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usertypeActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setText("0 = Admin | 1 = Normal");
 
         lblNameError.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         lblNameError.setForeground(new java.awt.Color(255, 0, 0));
@@ -195,8 +177,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
                                 .addGap(94, 94, 94)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel7)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4)))
+                                    .addComponent(jLabel5)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(114, 114, 114)
                                 .addComponent(jLabel3)))
@@ -205,15 +186,11 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addGap(39, 39, 39)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(username)
+                    .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
                     .addComponent(confirmpassword)
                     .addComponent(name, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(password)
-                    .addComponent(showPwd)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(usertype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addComponent(jLabel6)))
+                    .addComponent(showPwd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPwdError, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -254,13 +231,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNameError))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(usertype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate)
                     .addComponent(btnDelete)
@@ -279,7 +250,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
     private void getNewData() {
         clearInputBoxes();
         try {
-            rs = dbCon.executeStatementQuery("SELECT username, name, type  FROM loginusers");
+            rs = dbCon.executeStatementQuery("SELECT username, name FROM loginusers");
             rs.beforeFirst();
             rs.first();
             populateFields();
@@ -294,7 +265,6 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
         try {
             username.setText(rs.getString("username"));
             name.setText(rs.getString("name"));
-            usertype.setSelectedItem(rs.getString("type"));
             EnableDisableButtons();
         } catch (SQLException ex) {
             Logger.getLogger(UpdateDeleteEmployee.class.getName()).log(Level.SEVERE, null, ex);
@@ -371,7 +341,6 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
         username.setText("");
         password.setText("");
         confirmpassword.setText("");
-        usertype.setSelectedIndex(0);
     }
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
@@ -409,7 +378,6 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
                      String prepSQL = "UPDATE loginusers set username = '" + username.getText().trim() + "'"
                             + " , password ='" + hashPwd + "'"
                             + " , name = '" + name.getText().trim() + "'"
-                            + " , type = " + Integer.parseInt(usertype.getSelectedItem().toString())
                             + " WHERE username = '" + rs.getString("username") + "'";;
 
                     int result = dbCon.executePreparedStmnt(prepSQL);
@@ -524,10 +492,6 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
         }
 
     }
-    private void usertypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usertypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_usertypeActionPerformed
-
     private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameActionPerformed
@@ -596,9 +560,7 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel lblNameError;
     private javax.swing.JLabel lblPwdError;
@@ -607,6 +569,5 @@ public class UpdateDeleteLoginUser extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JCheckBox showPwd;
     private javax.swing.JTextField username;
-    private javax.swing.JComboBox<String> usertype;
     // End of variables declaration//GEN-END:variables
 }

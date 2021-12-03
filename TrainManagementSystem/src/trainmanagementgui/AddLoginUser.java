@@ -32,11 +32,7 @@ public class AddLoginUser extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         dbCon = new myDBCon();
         clearErrorLabels();
-        usertype.removeAllItems();
-        usertype.addItem("0");
-        usertype.addItem("1");
-        
-        
+            
 
     }
 
@@ -117,7 +113,6 @@ public class AddLoginUser extends javax.swing.JFrame {
         username.setText("");
         password.setText("");
         confirmpassword.setText("");
-        usertype.setSelectedIndex(0);
     }
 
     /**
@@ -132,16 +127,13 @@ public class AddLoginUser extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JTextField();
         name = new javax.swing.JTextField();
-        usertype = new javax.swing.JComboBox<>();
         btnAddNewUser = new javax.swing.JButton();
         lblPwdError = new javax.swing.JLabel();
         lblUsernameError = new javax.swing.JLabel();
         lblNameError = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
         showPwd = new javax.swing.JCheckBox();
         confirmpassword = new javax.swing.JPasswordField();
@@ -151,16 +143,13 @@ public class AddLoginUser extends javax.swing.JFrame {
         setBackground(new java.awt.Color(51, 0, 51));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Add Login User");
+        jLabel1.setText("Add Admin");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("USERNAME:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("PASSWORD:");
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setText("Type:");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Name:");
@@ -177,15 +166,8 @@ public class AddLoginUser extends javax.swing.JFrame {
             }
         });
 
-        usertype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        usertype.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usertypeActionPerformed(evt);
-            }
-        });
-
         btnAddNewUser.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        btnAddNewUser.setText("Add New");
+        btnAddNewUser.setText("Add Admin");
         btnAddNewUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddNewUserActionPerformed(evt);
@@ -203,8 +185,6 @@ public class AddLoginUser extends javax.swing.JFrame {
         lblNameError.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         lblNameError.setForeground(new java.awt.Color(255, 0, 0));
         lblNameError.setText("error label");
-
-        jLabel6.setText("0 = Admin | 1 = Normal");
 
         showPwd.setText("Show Password");
         showPwd.addActionListener(new java.awt.event.ActionListener() {
@@ -250,42 +230,30 @@ public class AddLoginUser extends javax.swing.JFrame {
                                     .addComponent(lblUsernameError, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(38, Short.MAX_VALUE))))))
             .addGroup(layout.createSequentialGroup()
+                .addGap(171, 171, 171)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(209, 209, 209)
-                        .addComponent(btnAddNewUser))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(181, 181, 181)
-                                .addComponent(jLabel4))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel5)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(usertype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(63, 63, 63)
-                                .addComponent(jLabel6))
-                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(252, Short.MAX_VALUE))
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(confirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddNewUser))
+                .addContainerGap(311, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(305, 305, 305))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
+                        .addGap(34, 34, 34)
                         .addComponent(jLabel2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblUsernameError))))
@@ -311,14 +279,9 @@ public class AddLoginUser extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(usertype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(28, 28, 28)
+                .addGap(52, 52, 52)
                 .addComponent(btnAddNewUser)
-                .addGap(48, 48, 48))
+                .addGap(56, 56, 56))
         );
 
         pack();
@@ -331,10 +294,6 @@ public class AddLoginUser extends javax.swing.JFrame {
     private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nameActionPerformed
-
-    private void usertypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usertypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_usertypeActionPerformed
 
     private void btnAddNewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewUserActionPerformed
         // TODO add your handling code here:
@@ -363,11 +322,10 @@ public class AddLoginUser extends javax.swing.JFrame {
                 hashPwd = hashPwd.substring(0, Math.min(hashPwd.length(), 25));
                 
                 //Inserts the new user data into the login user table.
-                String prepSQL = "insert into loginusers (username, password, name, type) VALUES ("
+                String prepSQL = "insert into loginusers (username, password, name) VALUES ("
                         + "'" + username.getText().trim() + "'"
                         + ", '" + hashPwd + "'"
-                        + ", '" + name.getText().trim() + "'"
-                        + ", " + Integer.parseInt(usertype.getSelectedItem().toString()) + ")";
+                        + ", '" + name.getText().trim() + "')";
 
                 int result = dbCon.executePreparedStmnt(prepSQL);
 
@@ -460,9 +418,7 @@ public class AddLoginUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel lblNameError;
     private javax.swing.JLabel lblPwdError;
@@ -471,6 +427,5 @@ public class AddLoginUser extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JCheckBox showPwd;
     private javax.swing.JTextField username;
-    private javax.swing.JComboBox<String> usertype;
     // End of variables declaration//GEN-END:variables
 }

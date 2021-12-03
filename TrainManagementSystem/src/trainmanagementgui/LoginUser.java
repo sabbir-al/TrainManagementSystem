@@ -5,11 +5,11 @@ public class LoginUser {
 
     String username;
     String name;
-    int type;
+    int id;
 
-    LoginUser(String username, String name, int type) {
+    LoginUser(String username, String name, int id) {
         this.username = username;
         this.name = name;
-        this.type = type;
+        this.id = id;
     }
 }

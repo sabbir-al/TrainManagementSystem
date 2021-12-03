@@ -44,7 +44,6 @@ public class AddCustomer extends javax.swing.JFrame {
         
         dbCon = new myDBCon();
         getNewData();
-
     }
     
     private void getNewData() {
