@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 public class AddAllocatioin extends javax.swing.JFrame {
 
     myDBCon dbCon;
-    ResultSet rs;
+    ResultSet rs, rs2;
 
    
     public AddAllocatioin(){
@@ -27,6 +27,8 @@ public class AddAllocatioin extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
         lblDepartureTime.setVisible(false);
+        lblTicketCost.setVisible(false);
+
         
       
         dbCon = new myDBCon();
@@ -38,12 +40,24 @@ public class AddAllocatioin extends javax.swing.JFrame {
             // populate mgr combo box
             while (rs.next()) {
                 cmbTrainLine.addItem(rs.getString("TrainName"));
-                //cmbRoute.addItem(rs.getString("StationName"));
+                
             }
             
-            rs = dbCon.executeStatementQuery("SELECT RouteID FROM TRAINLINE ORDER BY TrainID ASC");
+            rs = dbCon.executeStatementQuery("SELECT ROUTES.RouteID, LOCATION.StationName\n" +
+                "FROM ROUTES\n" +
+                "INNER JOIN LOCATION ON ROUTES.Origin=LOCATION.LocationID\n" +
+                "ORDER BY ROUTES.RouteID ASC");
+            rs2 = dbCon.executeStatementQuery("SELECT ROUTES.RouteID, LOCATION.StationName\n" +
+                "FROM ROUTES\n" +
+                "INNER JOIN LOCATION ON ROUTES.Destination=LOCATION.LocationID\n" +
+                "ORDER BY ROUTES.RouteID ASC");
+            
+            while(rs.next()&&rs2.next()){
+                cmbRoute.addItem(rs.getString("StationName") + " -> "+rs2.getString("StationName"));
+            }
 
             rs.close();
+            rs2.close();
            
         } catch (SQLException e) {
             System.out.println(e);
@@ -52,6 +66,15 @@ public class AddAllocatioin extends javax.swing.JFrame {
         getNewRouteId();
     }
     
+        public boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+    }
+
 
     
         private void getNewRouteId() {
@@ -59,22 +82,22 @@ public class AddAllocatioin extends javax.swing.JFrame {
         String str;
         try {
             // populate CustomerID field
-            rs = dbCon.executeStatementQuery("select MAX(RouteID) as RouteID from ROUTES");
+            rs = dbCon.executeStatementQuery("select MAX(AllocationID) as AllocationID from ALLOCATION");
         
             while (rs.next()) {
-                str = rs.getString("RouteID");
+                str = rs.getString("AllocationID");
                 if (str==null){
-                    txtDepartureTime.setText("1");
+                    txtAllocationID.setText("1");
                 }
                 else{
                     int temp = Integer.parseInt(str);
-                    txtDepartureTime.setText(String.valueOf(++temp));
+                    txtAllocationID.setText(String.valueOf(++temp));
                 }
             }
 
 
         } catch (SQLException e) {
-            javax.swing.JLabel label = new javax.swing.JLabel("SQL Error - Error Generating RouteID");
+            javax.swing.JLabel label = new javax.swing.JLabel("SQL Error - Error Generating AllocationID");
             label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
             JOptionPane.showMessageDialog(null, label, "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -83,6 +106,8 @@ public class AddAllocatioin extends javax.swing.JFrame {
     void clearErrorLabels() {
         lblDepartureTime.setText("");
         lblDepartureTime.setVisible(false);
+        lblTicketCost.setText("");
+        lblTicketCost.setVisible(false);
     }
 
     /**
@@ -107,7 +132,6 @@ public class AddAllocatioin extends javax.swing.JFrame {
         txtAllocationID = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtTicketCost = new javax.swing.JTextField();
-        lbSameSelection1 = new javax.swing.JLabel();
         lblTicketCost = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -150,13 +174,9 @@ public class AddAllocatioin extends javax.swing.JFrame {
         txtAllocationID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel6.setText("Ticket Cost: ");
+        jLabel6.setText("Ticket Cost ($) : ");
 
         txtTicketCost.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        lbSameSelection1.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
-        lbSameSelection1.setForeground(new java.awt.Color(255, 0, 0));
-        lbSameSelection1.setText("error label");
 
         lblTicketCost.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         lblTicketCost.setForeground(new java.awt.Color(255, 0, 0));
@@ -183,24 +203,19 @@ public class AddAllocatioin extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnAddNewEmp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbTrainLine, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbRoute, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtDepartureTime)
                             .addComponent(txtTicketCost, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(18, 18, 18)
+                        .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblDepartureTime, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
-                                .addGap(79, 79, 79))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lbSameSelection1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                .addContainerGap())
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblTicketCost, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                .addContainerGap())))
+                            .addComponent(lblTicketCost, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                            .addComponent(lblDepartureTime, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtAllocationID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cmbTrainLine, javax.swing.GroupLayout.Alignment.LEADING, 0, 299, Short.MAX_VALUE)
+                            .addComponent(txtAllocationID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbRoute, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,8 +233,7 @@ public class AddAllocatioin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(cmbRoute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbSameSelection1))
+                    .addComponent(cmbRoute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -245,14 +259,23 @@ public class AddAllocatioin extends javax.swing.JFrame {
         boolean result = true;
        
 
-        if (cmbTrainLine.getSelectedItem().toString().equals(cmbRoute.getSelectedItem().toString()) ) {
-
-            lblDepartureTime.setText("Invalid. Origin and Destination Same");
-
+        if (!txtDepartureTime.getText().trim().matches("[0-1][0-9]:[0-5][0-9] [A|P]M") || txtDepartureTime.getText().trim().isEmpty()) {
+            
+            lblDepartureTime.setText("Invalid format. Format Eg. 12:00 PM ");
             lblDepartureTime.setVisible(true);
             result = false;
         }
         
+         if (txtTicketCost.getText().trim().isEmpty() || !(isInteger(txtTicketCost.getText().trim()))) {
+            if (txtTicketCost.getText().trim().isEmpty()) {
+                lblTicketCost.setText("Invalid. Cannot be empty.");
+            } else if (!(isInteger(txtTicketCost.getText().trim()))) {
+                lblTicketCost.setText("Invalid. Must be number.");
+            }
+
+            lblTicketCost.setVisible(true);
+            result = false;
+        }
        
         return result;
     }
@@ -267,14 +290,30 @@ public class AddAllocatioin extends javax.swing.JFrame {
                 
             if (isValidData()) {
                 
-                //Checks if the route already exists in the table
-                rs = dbCon.executeStatementQuery("Select * from ROUTES Where Origin = " +"(Select LocationID FROM LOCATION Where StationName = '"+cmbTrainLine.getSelectedItem().toString() + "')"+" AND Destination = "+ "(Select LocationID FROM LOCATION Where StationName = '"+cmbRoute.getSelectedItem().toString() + "')");
+                //Checks if the Allocation already exists in the table
+                String[] routes = cmbRoute.getSelectedItem().toString().split(" -> ");
+                
+                
+                rs = dbCon.executeStatementQuery("Select * from allocation where TrainId = (select TrainID from TRAINLINE where TrainName = '" +cmbTrainLine.getSelectedItem().toString() + "') and RouteID = (select routeID from Routes \n" +
+"where origin = (select locationID from location where StationName = '"+routes[0] +"' ) \n" +
+"and destination = (select locationID from location where StationName = '"+routes[1] +"' )) and DepartureTime = '"+txtDepartureTime.getText() +"'");
                 
                 if(!rs.next()){
-                    String prepareSQL = "INSERT INTO ROUTES (RouteID, Origin, Destination) VALUES ("
-                        + Integer.parseInt(txtDepartureTime.getText())
-                        + ", " + "(Select LocationID FROM LOCATION Where StationName = '"+cmbTrainLine.getSelectedItem().toString() + "')"
-                        + ", " + "(Select LocationID FROM LOCATION Where StationName = '"+cmbRoute.getSelectedItem().toString() + "'))";
+                    int trainid, routeid;
+                    rs = dbCon.executeStatementQuery("select TrainID from TRAINLINE where TrainName = '" +cmbTrainLine.getSelectedItem().toString() + "'");
+                    rs.next();
+                    trainid = rs.getInt("TrainID");
+                    
+                    rs = dbCon.executeStatementQuery("select routeID from Routes where origin = (select locationID from location where StationName = '"+routes[0] +"') " + "and destination = (select locationID from location where StationName = '"+routes[1] +"')");
+                    rs.next();
+                    routeid = rs.getInt("routeID");
+                    
+                         
+                    
+                    String prepareSQL = "INSERT INTO ALLOCATION (AllocationID, TrainID, RouteID, DepartureTime,TicketCost) VALUES ("
+                        + Integer.parseInt(txtAllocationID.getText())
+                        + ", " +trainid
+                        + ", " + routeid+", '"+txtDepartureTime.getText()+"', " +Double.parseDouble(txtTicketCost.getText())+ ")";
           
 
 
@@ -282,7 +321,7 @@ public class AddAllocatioin extends javax.swing.JFrame {
 
                     if (result > 0) {
 
-                        javax.swing.JLabel label = new javax.swing.JLabel("New Route added successfully.");
+                        javax.swing.JLabel label = new javax.swing.JLabel("New Allocation added successfully.");
                         label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
                         JOptionPane.showMessageDialog(null, label, "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 
@@ -292,7 +331,7 @@ public class AddAllocatioin extends javax.swing.JFrame {
                     }      
                 }
                 else{
-                    JOptionPane.showMessageDialog(this, "Same Route Already Exists!!");
+                    JOptionPane.showMessageDialog(this, "Same Allocation Already Exists!!");
                 }
                 
                
@@ -308,7 +347,7 @@ public class AddAllocatioin extends javax.swing.JFrame {
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error adding new Route. "+ e);
+            JOptionPane.showMessageDialog(null, "Error adding new allocation. "+ e);
         }
     }//GEN-LAST:event_btnAddNewEmpActionPerformed
 
@@ -323,7 +362,6 @@ public class AddAllocatioin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel lbSameSelection1;
     private javax.swing.JLabel lblDepartureTime;
     private javax.swing.JLabel lblTicketCost;
     private javax.swing.JTextField txtAllocationID;

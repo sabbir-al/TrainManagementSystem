@@ -43,32 +43,25 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="btnAddNewEmp" max="32767" attributes="0"/>
-                          <Component id="cmbTrainLine" alignment="0" max="32767" attributes="0"/>
-                          <Component id="cmbRoute" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtDepartureTime" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtTicketCost" alignment="1" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="lblDepartureTime" pref="126" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="lbSameSelection1" pref="195" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="lblTicketCost" pref="195" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="lblTicketCost" pref="196" max="32767" attributes="0"/>
+                          <Component id="lblDepartureTime" pref="196" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="txtAllocationID" min="-2" pref="100" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="cmbTrainLine" alignment="0" pref="299" max="32767" attributes="0"/>
+                          <Component id="txtAllocationID" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                          <Component id="cmbRoute" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -91,7 +84,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmbRoute" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lbSameSelection1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -223,7 +215,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="18" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Ticket Cost: "/>
+        <Property name="text" type="java.lang.String" value="Ticket Cost ($) : "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTicketCost">
@@ -231,17 +223,6 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="18" style="0"/>
         </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lbSameSelection1">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="18" style="2"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="error label"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblTicketCost">
