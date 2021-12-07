@@ -10,17 +10,25 @@ package trainmanagementgui;
  * @author wissam
  */
 public class Menu extends javax.swing.JFrame {
-
+       int customerid;
 
     public Menu(LoginUser userInfo) {
         initComponents();
         this.setLocationRelativeTo(null);
+        customerid = userInfo.id;
         
         //Disables User Menu if the login user is not admin.
          if (userInfo.id != 0) { 
             jMenuUser.setVisible(false);
             jMenuUser1.setVisible(false);
+            jMenuUser2.setVisible(false);
+            jMenuUser3.setVisible(false);
+            jMenuUser4.setVisible(false);
+            jMenuUser5.setVisible(false);
         }
+         else{
+             jMenuUser6.setVisible(false);
+         }
     }
 
     /**
@@ -247,7 +255,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem19.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem19.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jMenuItem19.setText("View/Cancel Previos Booking");
+        jMenuItem19.setText("View/Cancel Previous Booking");
         jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem19ActionPerformed(evt);
@@ -337,7 +345,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
-        // TODO add your handling code here:
+        (new AddBooking(customerid)).setVisible(true);
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
