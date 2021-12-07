@@ -349,7 +349,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
-        // TODO add your handling code here:
+       (new DeleteBookings(customerid)).setVisible(true);
     }//GEN-LAST:event_jMenuItem19ActionPerformed
 
 
