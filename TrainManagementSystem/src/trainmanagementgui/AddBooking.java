@@ -24,6 +24,7 @@ public class AddBooking extends javax.swing.JFrame {
     boolean isSelectedDepartureTime = false;
     int routeid, trainid;
     String deptTime;
+    int allocationid;
 
    
     public AddBooking(int customerid){
@@ -36,6 +37,7 @@ public class AddBooking extends javax.swing.JFrame {
         cmbTrainLine.setEnabled(false);
         cmbDepartureTime.setEnabled(false);
         btnAddBooking.setEnabled(false);
+        btnPrev.setEnabled(false);
 
         
       
@@ -261,50 +263,21 @@ public class AddBooking extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    boolean isValidData() {
-       
-        boolean result = true;
-       
-
-
-       
-        return result;
-    }
 
 
 
     private void btnAddBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBookingActionPerformed
-        // TODO add your handling code here:
-
         try {
-
-                
-            if (isValidData()) {
-                
-                //Checks if the Allocation already exists in the table
-                String[] routes = cmbRoute.getSelectedItem().toString().split(" -> ");
-                
-                
-                rs = dbCon.executeStatementQuery("Select * from allocation where TrainId = (select TrainID from TRAINLINE where TrainName = '" +cmbTrainLine.getSelectedItem().toString() + "') and RouteID = (select routeID from Routes \n" +
-"where origin = (select locationID from location where StationName = '"+routes[0] +"' ) \n" +
-"and destination = (select locationID from location where StationName = '"+routes[1] +"' )) and DepartureTime = '"+cmbDepartureTime.getSelectedItem().toString() +"'");
+            // TODO add your handling code here:
+            
+            
+                rs = dbCon.executeStatementQuery("Select * from bookings where customerId = "+customerid+" and allocationId = "+allocationid);
                 
                 if(!rs.next()){
-                    int trainid, routeid;
-                    rs = dbCon.executeStatementQuery("select TrainID from TRAINLINE where TrainName = '" +cmbTrainLine.getSelectedItem().toString() + "'");
-                    rs.next();
-                    trainid = rs.getInt("TrainID");
-                    
-                    rs = dbCon.executeStatementQuery("select routeID from Routes where origin = (select locationID from location where StationName = '"+routes[0] +"') " + "and destination = (select locationID from location where StationName = '"+routes[1] +"')");
-                    rs.next();
-                    routeid = rs.getInt("routeID");
-                    
-                         
-                    
-                    String prepareSQL = "INSERT INTO ALLOCATION (AllocationID, TrainID, RouteID, DepartureTime,TicketCost) VALUES ("
+                     String prepareSQL = "INSERT INTO bookings (BookingID, CustomerID, AllocationID) VALUES ("
                         + Integer.parseInt(txtBookingID.getText())
-                        + ", " +trainid
-                        + ", " + routeid+", '"+cmbDepartureTime.getSelectedItem().toString()+"', " +Double.parseDouble(txtTicketCost.getText())+ ")";
+                        + ", " +customerid
+                        + ", " + allocationid+ ")";
           
 
 
@@ -312,38 +285,52 @@ public class AddBooking extends javax.swing.JFrame {
 
                     if (result > 0) {
 
-                        javax.swing.JLabel label = new javax.swing.JLabel("New Allocation added successfully.");
+                        javax.swing.JLabel label = new javax.swing.JLabel("New Booking Made successfully.");
                         label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
                         JOptionPane.showMessageDialog(null, label, "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 
                         this.dispose();
                     } else {
                         // check validation errors 
-                    }      
+                    } 
+                    
                 }
                 else{
-                    JOptionPane.showMessageDialog(this, "Same Allocation Already Exists!!");
+                    JOptionPane.showMessageDialog(this, "Same Booking Already Exists!!");
                 }
-                
-               
-                
-
-
-            } else {
-
-                javax.swing.JLabel label = new javax.swing.JLabel("Please fix validation errors...");
-                label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
-                JOptionPane.showMessageDialog(null, label, "ERROR", JOptionPane.ERROR_MESSAGE);
-
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error adding new allocation. "+ e);
+                 
+                   
+                    
+    } catch (SQLException ex) {
+            Logger.getLogger(AddBooking.class.getName()).log(Level.SEVERE, null, ex);
         }
+     
     }//GEN-LAST:event_btnAddBookingActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
-        // TODO add your handling code here:
+
+        if (isSelectedRoute && !isSelectedTrainLine && !isSelectedDepartureTime){
+ 
+            cmbTrainLine.setEnabled(false);
+            cmbTrainLine.removeAllItems();           
+            isSelectedRoute = false;
+            btnPrev.setEnabled(false);
+        }
+        
+        else if (isSelectedRoute && isSelectedTrainLine && !isSelectedDepartureTime){
+            
+            cmbDepartureTime.setEnabled(false);
+            cmbTrainLine.setEnabled(true);
+            cmbDepartureTime.removeAllItems();
+            isSelectedTrainLine = false;
+        }
+        else if(isSelectedRoute && isSelectedTrainLine && isSelectedDepartureTime){
+            isSelectedDepartureTime = false;
+            cmbDepartureTime.setEnabled(true);
+            txtTicketCost.setText("");
+            btnAddBooking.setEnabled(false);
+        }
+        
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
@@ -365,6 +352,7 @@ public class AddBooking extends javax.swing.JFrame {
                 }
                 cmbTrainLine.setEnabled(true);
                 isSelectedRoute=true;
+                btnPrev.setEnabled(true);
         }
         else if (isSelectedRoute && !isSelectedTrainLine && !isSelectedDepartureTime){
             
@@ -387,16 +375,15 @@ public class AddBooking extends javax.swing.JFrame {
         else if (isSelectedRoute && isSelectedTrainLine && !isSelectedDepartureTime){
             
             String deptTime = cmbDepartureTime.getSelectedItem().toString();
-            rs=dbCon.executeStatementQuery("select TicketCost from ALLOCATION where TrainID = "+trainid+" and routeid = "+ routeid + "and departureTime = '"+deptTime+ "'");
+            rs=dbCon.executeStatementQuery("select TicketCost, AllocationID  from ALLOCATION where TrainID = "+trainid+" and routeid = "+ routeid + "and departureTime = '"+deptTime+ "'");
             rs.next();
             txtTicketCost.setText(rs.getString("TicketCost"));
+            allocationid = rs.getInt("AllocationID");
             
             cmbDepartureTime.setEnabled(false);
             isSelectedDepartureTime = true;
         }
-        else if(isSelectedRoute && isSelectedTrainLine && !isSelectedDepartureTime){
-            
-            
+        else if(isSelectedRoute && isSelectedTrainLine && isSelectedDepartureTime){
             btnAddBooking.setEnabled(true);
         }
         
